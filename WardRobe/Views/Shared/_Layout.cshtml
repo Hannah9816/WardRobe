@@ -18,7 +18,7 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:darkslategray" >
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -35,9 +35,10 @@
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Wardrobes" asp-action="Index" style="font-family:Courier New, Courier, monospace; "class="navbar-brand">WardRobe.</a></li>
                         <li> <a asp-area="" asp-controller="MixnMatches" asp-action="Index"> Mix + Match </a></li>
-                        <li> <a>Backpack</a></li>
+                        <li> <a asp-area="" asp-controller="Trips" asp-action="Index">Trip </a></li>                       
+                        <li> <a asp-area="" asp-controller="Backpacks" asp-action="Index">Backpack</a></li>
                         <li> <a asp-area="" asp-controller="Calendars" asp-action="Index" >Calendar</a> </li>
-                        <li> <a>Friends/Chat </a></li>
+                        
                     </ul>
 
                 }

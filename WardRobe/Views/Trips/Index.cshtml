@@ -1,25 +1,14 @@
-﻿
-@model IEnumerable<WardRobe.Models.Backpack>
+﻿@model IEnumerable<WardRobe.Models.Trip>
 
 @{
     ViewData["Title"] = "Index";
-    var backpack = (List<Backpack>)ViewData["bacpack"];
 }
 
 <h2>Index</h2>
 
-<form>
-    <p>
-        Trip Name: @Html.DropDownList("Tripname", "All")
-        
-        <input type="submit" value="Search" />
-    </p>
-</form>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
 <table class="table">
     <thead>
         <tr>
@@ -27,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.TripName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Wardrobe)
+                @Html.DisplayNameFor(model => model.Date)
             </th>
             
             <th></th>
@@ -40,13 +29,13 @@
                 @Html.DisplayFor(modelItem => item.TripName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Wardrobe)
+                @Html.DisplayFor(modelItem => item.Date)
             </td>
             
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
 }

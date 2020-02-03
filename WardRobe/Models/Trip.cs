@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace WardRobe.Models
 {
-    public class Backpack
+    public class Trip
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string TripName { get; set; }
-        public string Wardrobe { get; set; }
+        public DateTime Date { get; set; }
         public string UserId { get; set; }
-
     }
 }

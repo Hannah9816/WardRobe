@@ -31,6 +31,7 @@ namespace WardRobe.Models
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
       
+        public string FileName { get; set; }
         public string  UserId { get; set; }
 
     }

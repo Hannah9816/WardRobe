@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,16 +14,44 @@ namespace WardRobe.Views.Backpacks
     public class BackpacksController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BackpacksController(ApplicationDbContext context)
+        public BackpacksController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+        public IList<Backpack> Backpack { get; set; } 
 
         // GET: Backpacks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Tripname)
         {
-            return View(await _context.Backpack.ToListAsync());
+            var trip = from t in _context.Backpack select t;
+
+            IQueryable<string> TypeQuery = from t in _context.Backpack
+                                           orderby t.TripName
+                                           select t.TripName;
+
+            IEnumerable<SelectListItem> items =
+                new SelectList(await TypeQuery.Distinct().ToListAsync());
+
+            ViewBag.userid = _userManager.GetUserId(HttpContext.User);
+
+            var userid = _userManager.GetUserId(HttpContext.User);
+
+            ViewBag.Tripname = items;
+
+            if (!String.IsNullOrEmpty(Tripname))
+            {
+                trip = trip.Where(t => t.TripName == Tripname && t.UserId.Contains(userid));
+            }
+
+            if (!String.IsNullOrEmpty(userid))
+            {
+                trip = trip.Where(t => t.UserId.Contains(userid));
+            }
+
+            return View(await trip.AsNoTracking().ToListAsync());
         }
 
         // GET: Backpacks/Details/5
@@ -46,6 +75,18 @@ namespace WardRobe.Views.Backpacks
         // GET: Backpacks/Create
         public IActionResult Create()
         {
+            ViewBag.userid = _userManager.GetUserId(HttpContext.User);
+
+            var userid = _userManager.GetUserId(HttpContext.User);
+
+            var wardrobe = from m in _context.Wardrobe select m;
+
+            var trip = from t in _context.Trip select t;
+
+            ViewData["wardrobe"] = wardrobe.Where(m => m.UserId.Contains(userid)).ToList();
+
+            ViewData["trip"] = trip.Where(t => t.UserId.Contains(userid)).ToList();
+
             return View();
         }
 
@@ -54,8 +95,10 @@ namespace WardRobe.Views.Backpacks
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TripName,Date,WardrobeId,UserId")] Backpack backpack)
+        public async Task<IActionResult> Create([Bind("Id,TripName,Wardrobe,UserId")] Backpack backpack)
         {
+            ViewBag.userid = _userManager.GetUserId(HttpContext.User);
+
             if (ModelState.IsValid)
             {
                 _context.Add(backpack);
@@ -86,7 +129,7 @@ namespace WardRobe.Views.Backpacks
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TripName,Date,WardrobeId,UserId")] Backpack backpack)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TripName,Wardrobe,UserId")] Backpack backpack)
         {
             if (id != backpack.Id)
             {
@@ -149,5 +192,6 @@ namespace WardRobe.Views.Backpacks
         {
             return _context.Backpack.Any(e => e.Id == id);
         }
+
     }
 }

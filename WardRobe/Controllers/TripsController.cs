@@ -9,36 +9,37 @@ using Microsoft.EntityFrameworkCore;
 using WardRobe.Data;
 using WardRobe.Models;
 
-namespace WardRobe.Views.MixnMatches
+namespace WardRobe.Views.Trips
 {
-    public class MixnMatchesController : Controller
+    public class TripsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public MixnMatchesController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public TripsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: MixnMatches
+        // GET: Trips
         public async Task<IActionResult> Index()
         {
             ViewBag.userid = _userManager.GetUserId(HttpContext.User);
 
             var userid = _userManager.GetUserId(HttpContext.User);
 
-            var mixnmatch = from m in _context.MixnMatch select m;
+            var trip = from m in _context.Trip select m;
 
             if (!String.IsNullOrEmpty(userid))
             {
-                mixnmatch = mixnmatch.Where(m => m.UserId.Contains(userid));
+                trip = trip.Where(m => m.UserId.Contains(userid));
             }
-            return View(await mixnmatch.AsNoTracking().ToListAsync());
+
+            return View(await trip.AsNoTracking().ToListAsync());
         }
 
-        // GET: MixnMatches/Details/5
+        // GET: Trips/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,48 +47,41 @@ namespace WardRobe.Views.MixnMatches
                 return NotFound();
             }
 
-            var mixnMatch = await _context.MixnMatch
+            var trip = await _context.Trip
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (mixnMatch == null)
+            if (trip == null)
             {
                 return NotFound();
             }
 
-            return View(mixnMatch);
+            return View(trip);
         }
 
-        // GET: MixnMatches/Create
+        // GET: Trips/Create
         public IActionResult Create()
         {
             ViewBag.userid = _userManager.GetUserId(HttpContext.User);
-
-            var userid = _userManager.GetUserId(HttpContext.User);
-
-            var wardrobe = from m in _context.Wardrobe select m;
-
-            ViewData["wardrobe"] = wardrobe.Where(m => m.UserId.Contains(userid)).ToList();
-
             return View();
         }
 
-        // POST: MixnMatches/Create
+        // POST: Trips/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Top,Bottom,UserId")] MixnMatch mixnMatch)
+        public async Task<IActionResult> Create([Bind("ID,TripName,Date,UserId")] Trip trip)
         {
             ViewBag.userid = _userManager.GetUserId(HttpContext.User);
             if (ModelState.IsValid)
             {
-                _context.Add(mixnMatch);
+                _context.Add(trip);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(mixnMatch);
+            return View(trip);
         }
 
-        // GET: MixnMatches/Edit/5
+        // GET: Trips/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,28 +89,22 @@ namespace WardRobe.Views.MixnMatches
                 return NotFound();
             }
 
-            var mixnMatch = await _context.MixnMatch.FindAsync(id);
-            if (mixnMatch == null)
+            var trip = await _context.Trip.FindAsync(id);
+            if (trip == null)
             {
                 return NotFound();
             }
-            var userid = _userManager.GetUserId(HttpContext.User);
-
-            var wardrobe = from m in _context.Wardrobe select m;
-
-            ViewData["wardrobe"] = wardrobe.Where(m => m.UserId.Contains(userid)).ToList();
-
-            return View(mixnMatch);
+            return View(trip);
         }
 
-        // POST: MixnMatches/Edit/5
+        // POST: Trips/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Top,Bottom,UserId")] MixnMatch mixnMatch)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,TripName,Date,UserId")] Trip trip)
         {
-            if (id != mixnMatch.ID)
+            if (id != trip.ID)
             {
                 return NotFound();
             }
@@ -125,12 +113,12 @@ namespace WardRobe.Views.MixnMatches
             {
                 try
                 {
-                    _context.Update(mixnMatch);
+                    _context.Update(trip);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MixnMatchExists(mixnMatch.ID))
+                    if (!TripExists(trip.ID))
                     {
                         return NotFound();
                     }
@@ -141,10 +129,10 @@ namespace WardRobe.Views.MixnMatches
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(mixnMatch);
+            return View(trip);
         }
 
-        // GET: MixnMatches/Delete/5
+        // GET: Trips/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -152,30 +140,30 @@ namespace WardRobe.Views.MixnMatches
                 return NotFound();
             }
 
-            var mixnMatch = await _context.MixnMatch
+            var trip = await _context.Trip
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (mixnMatch == null)
+            if (trip == null)
             {
                 return NotFound();
             }
 
-            return View(mixnMatch);
+            return View(trip);
         }
 
-        // POST: MixnMatches/Delete/5
+        // POST: Trips/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mixnMatch = await _context.MixnMatch.FindAsync(id);
-            _context.MixnMatch.Remove(mixnMatch);
+            var trip = await _context.Trip.FindAsync(id);
+            _context.Trip.Remove(trip);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MixnMatchExists(int id)
+        private bool TripExists(int id)
         {
-            return _context.MixnMatch.Any(e => e.ID == id);
+            return _context.Trip.Any(e => e.ID == id);
         }
     }
 }
