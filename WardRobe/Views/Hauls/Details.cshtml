@@ -1,0 +1,35 @@
+﻿@model WardRobe.Models.Haul
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+
+<div>
+    <h4>Backpack</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.clothes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.brand)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+    </dl>
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.category">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

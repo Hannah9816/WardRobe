@@ -32,14 +32,15 @@
             <div class="navbar-collapse collapse">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <ul class="nav navbar-nav">
-                        <li><a asp-area="" asp-controller="Wardrobes" asp-action="Index" style="font-family:Courier New, Courier, monospace; "class="navbar-brand">WardRobe.</a></li>
-                        <li> <a asp-area="" asp-controller="MixnMatches" asp-action="Index"> Mix + Match </a></li>
-                        <li> <a asp-area="" asp-controller="Trips" asp-action="Index">Trip </a></li>                       
-                        <li> <a asp-area="" asp-controller="Backpacks" asp-action="Index">Backpack</a></li>
-                        <li> <a asp-area="" asp-controller="Calendars" asp-action="Index" >Calendar</a> </li>
-                        
-                    </ul>
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Wardrobes" asp-action="Index" style="font-family:Courier New, Courier, monospace; " class="navbar-brand">WardRobe.</a></li>
+                    <li> <a asp-area="" asp-controller="MixnMatches" asp-action="Index"> Mix + Match </a></li>
+                    <li> <a asp-area="" asp-controller="Trips" asp-action="Index">Trip </a></li>
+                    <li> <a asp-area="" asp-controller="Backpacks" asp-action="Index">Backpack</a></li>
+                    <li> <a asp-area="" asp-controller="Calendars" asp-action="Index">Calendar</a> </li>
+                    <li> <a asp-area="" asp-controller="Hauls" asp-action="Index">Haul</a> </li>
+
+                </ul>
 
                 }
                 else

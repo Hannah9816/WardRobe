@@ -75,7 +75,7 @@ namespace WardRobe.Views.Wardrobes
 
             //Once link, time to read content from connection string
             CloudStorageAccount objectaccount =
-                CloudStorageAccount.Parse(configure["ConnectionStrings:wardrobe"]);
+                CloudStorageAccount.Parse(configure["ConnectionStrings:wardrobe1"]);
             CloudBlobClient blobclient = objectaccount.CreateCloudBlobClient();
 
             //create the container inside the stroage account

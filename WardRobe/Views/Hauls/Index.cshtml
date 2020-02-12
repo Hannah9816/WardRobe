@@ -1,0 +1,108 @@
+﻿@model IEnumerable<WardRobe.Models.Haul>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+<a asp-action="Create">Create New</a>
+</p>
+
+<div class="container">
+    <h2 class="text-center">Wardrobe</h2>
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3" style="margin-bottom:25px">
+            <div class="thumbnail">
+                <div class="image" style="margin-bottom:20px">
+                    @if (@item.category == "Shirt")
+                    {
+                        <img class="img-responsive" src="~/tshirt.png" height="350" width="240" />
+                    }
+                    @if (@item.category == "Dress")
+                    {
+                        <img class="img-responsive" src="~/garment.png" height="350" width="240" />
+                    }
+                    
+
+
+                </div>
+                <div class="caption" style="border-top:3px solid #808080">
+                    <h3><a asp-action="Details" asp-route-id="@item.category">@item.clothes</a></h3>
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.clothes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.clothes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            
+            <td>
+                @{
+                    var param = new Dictionary<string, string>
+                       {
+                        { "partitionkey", item.PartitionKey},
+                        { "rowkey", item.RowKey}
+                   };
+                }
+                <a class=" = " btn btn-primary" asp-action="Edit" asp-all-route-data="param">Edit</a>
+
+                @{
+                    var detail = new Dictionary<string, string>
+                        {
+                        { "partitionkey", item.PartitionKey},
+                        { "rowkey", item.RowKey}
+                    };
+                }
+                <a class=" = " btn btn-primary" asp-action="Delete" asp-all-route-data="param">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
